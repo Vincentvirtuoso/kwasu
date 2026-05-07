@@ -1,0 +1,16 @@
+{
+  "extends": "../../../packages/tsconfig/react-library.json",
+  "compilerOptions": {
+    "composite": true,
+    "declarationMap": true,
+    "rootDir": "src",
+    "outDir": "dist",
+    "moduleResolution": "bundler"
+  },
+  "references": [
+    { "path": "../../types" },
+    { "path": "../../utils/others" },
+    { "path": "../../utils/validators" }
+  ],
+  "include": ["src"]
+}

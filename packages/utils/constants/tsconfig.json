@@ -1,0 +1,12 @@
+{
+  "extends": "../../../packages/tsconfig/base.json",
+  "compilerOptions": {
+    "composite": true,
+    "outDir": "dist",
+    "rootDir": "src",
+    "declarationMap": true,
+    "moduleResolution": "bundler"
+  },
+  "references": [{ "path": "../../types" }],
+  "include": ["src"]
+}
