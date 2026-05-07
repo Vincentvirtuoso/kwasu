@@ -1,0 +1,1 @@
+{"version":3,"file":"CopyButton.d.ts","sourceRoot":"","sources":["../../src/buttons/CopyButton.tsx"],"names":[],"mappings":"AAIA,UAAU,eAAe;IACvB,IAAI,EAAE,MAAM,CAAC;IACb,KAAK,CAAC,EAAE,MAAM,CAAC;IACf,IAAI,CAAC,EAAE,IAAI,GAAG,IAAI,CAAC;IACnB,SAAS,CAAC,EAAE,MAAM,CAAC;CACpB;AAED,wBAAgB,UAAU,CAAC,EACzB,IAAI,EACJ,KAAK,EACL,IAAW,EACX,SAAS,GACV,EAAE,eAAe,2CA4BjB"}

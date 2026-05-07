@@ -3,7 +3,7 @@ import { jwtVerify } from "jose";
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.svg|.*\\.png|.*\\.jpg|.*\\.webp).*)",
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|webp|gif|mp3|mp4|wav|ogg|pdf|ico|woff|woff2|ttf|otf)).*)",
   ],
 };
 
@@ -39,7 +39,7 @@ async function getSessionToken(request: NextRequest) {
   }
 }
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (isPublic(pathname)) {

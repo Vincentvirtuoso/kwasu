@@ -1,2 +1,2 @@
-"use strict";
+export * from "./Slider";
 //# sourceMappingURL=index.js.map
