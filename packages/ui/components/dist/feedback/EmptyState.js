@@ -1,7 +1,6 @@
 "use client";
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { cn } from "@kwasu-portal/utils-others";
-// ─── Per-variant defaults ────────────────────────────────────────
 const DEFAULTS = {
     "first-run": {
         icon: "🚀",
@@ -32,7 +31,6 @@ const DEFAULTS = {
         iconColor: "text-[var(--color-info)]",
     },
 };
-// ─── Action button ───────────────────────────────────────────────
 function ActionBtn({ action }) {
     const base = "inline-flex items-center gap-2 rounded-lg font-sans text-sm font-semibold transition-all duration-150 px-5 py-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)]";
     const variantClass = {
@@ -45,7 +43,6 @@ function ActionBtn({ action }) {
     }
     return (_jsx("button", { onClick: action.onClick, className: cn(base, variantClass), children: action.label }));
 }
-// ─── Variant-specific content ────────────────────────────────────
 function FirstRunContent() {
     return (_jsx("ul", { className: "mt-2 space-y-1.5 text-left", children: [
             "Complete your profile information",
@@ -59,7 +56,6 @@ function ErrorContent({ detail, onRetry, }) {
 function FilteredContent({ filterLabel, onClearFilter, }) {
     return (_jsxs("div", { className: "mt-3 flex flex-col items-center gap-3", children: [filterLabel && (_jsxs("div", { className: "inline-flex items-center gap-2 rounded-full border border-[var(--color-info-light)] bg-[var(--color-info-bg)] px-3 py-1", children: [_jsxs("span", { className: "font-sans text-xs text-[var(--color-info-dark)]", children: ["Filter: ", _jsx("strong", { children: filterLabel })] }), onClearFilter && (_jsx("button", { onClick: onClearFilter, "aria-label": "Clear filter", className: "text-[var(--color-info)] opacity-70 hover:opacity-100 text-sm leading-none font-bold", children: "\u00D7" }))] })), onClearFilter && (_jsx("button", { onClick: onClearFilter, className: "font-sans text-sm font-semibold text-[var(--color-green-700)] hover:underline", children: "Clear all filters" }))] }));
 }
-// ─── Main component ──────────────────────────────────────────────
 export function EmptyState({ variant = "no-results", title, description, icon, primaryAction, secondaryAction, filterLabel, errorDetail, onRetry, onClearFilter, className, }) {
     const d = DEFAULTS[variant];
     const resolvedTitle = title ?? d.title;

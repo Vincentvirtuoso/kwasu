@@ -14,9 +14,7 @@ interface EmptyStateProps {
     primaryAction?: EmptyStateAction;
     secondaryAction?: EmptyStateAction;
     className?: string;
-    /** For "filtered" variant — what filter is active */
     filterLabel?: string;
-    /** For "error" variant — technical detail */
     errorDetail?: string;
     onRetry?: () => void;
     onClearFilter?: () => void;

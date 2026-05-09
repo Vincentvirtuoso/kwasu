@@ -2,7 +2,6 @@
 import { cn } from "@kwasu-portal/utils-others";
 import type { ReactNode } from "react";
 
-// ─── Types ─────────────────────────────────────────────────────
 type EmptyStateVariant = "first-run" | "no-results" | "error" | "filtered";
 
 interface EmptyStateAction {
@@ -20,15 +19,12 @@ interface EmptyStateProps {
   primaryAction?: EmptyStateAction;
   secondaryAction?: EmptyStateAction;
   className?: string;
-  /** For "filtered" variant — what filter is active */
   filterLabel?: string;
-  /** For "error" variant — technical detail */
   errorDetail?: string;
   onRetry?: () => void;
   onClearFilter?: () => void;
 }
 
-// ─── Per-variant defaults ────────────────────────────────────────
 const DEFAULTS: Record<
   EmptyStateVariant,
   {
@@ -70,7 +66,6 @@ const DEFAULTS: Record<
   },
 };
 
-// ─── Action button ───────────────────────────────────────────────
 function ActionBtn({ action }: { action: EmptyStateAction }) {
   const base =
     "inline-flex items-center gap-2 rounded-lg font-sans text-sm font-semibold transition-all duration-150 px-5 py-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)]";
@@ -99,7 +94,6 @@ function ActionBtn({ action }: { action: EmptyStateAction }) {
   );
 }
 
-// ─── Variant-specific content ────────────────────────────────────
 function FirstRunContent() {
   return (
     <ul className="mt-2 space-y-1.5 text-left">
@@ -187,7 +181,6 @@ function FilteredContent({
   );
 }
 
-// ─── Main component ──────────────────────────────────────────────
 export function EmptyState({
   variant = "no-results",
   title,

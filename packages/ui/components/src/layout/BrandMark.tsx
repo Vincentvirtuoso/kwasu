@@ -36,7 +36,7 @@ export function BrandMark({
   }
 
   return (
-    <div className={cn("flex items-center gap-3", className)}>
+    <div className={cn("flex items-center gap-1", className)}>
       <img
         src={src}
         alt={alt}

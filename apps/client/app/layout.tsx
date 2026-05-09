@@ -78,7 +78,7 @@ export default function RootLayout({
       className={`${sans.variable} ${serif.variable} ${mono.variable}`}
       suppressHydrationWarning
     >
-      <body className="antialiased">
+      <body className="antialiased text-fg-base">
         <Providers>{children}</Providers>
       </body>
     </html>
