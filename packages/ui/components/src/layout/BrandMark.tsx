@@ -19,7 +19,7 @@ export function BrandMark({
   logoOnly = false,
   size = "md",
   className,
-  src = "/logo.png",
+  src = "/kwasu-logo.png",
   alt = "Kwara State University logo",
 }: BrandMarkProps) {
   const sizes = sizeConfig[size];
