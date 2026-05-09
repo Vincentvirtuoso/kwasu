@@ -1,4 +1,3 @@
-import React from "react";
 import { cn } from "@kwasu-portal/utils-others";
 
 interface BrandMarkProps {
@@ -40,7 +39,7 @@ export function BrandMark({
       <img
         src={src}
         alt={alt}
-        className={cn("object-contain rounded-lg flex-shrink-0")}
+        className={cn("object-contain rounded-lg shrink-0")}
         style={{ height: sizes.image, width: sizes.image }}
       />
       <div className="min-w-0">
