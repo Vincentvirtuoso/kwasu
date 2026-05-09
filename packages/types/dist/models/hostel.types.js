@@ -1,2 +1,2 @@
-"use strict";
+export {};
 //# sourceMappingURL=hostel.types.js.map

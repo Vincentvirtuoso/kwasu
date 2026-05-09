@@ -1,2 +1,2 @@
-"use strict";
+export {};
 //# sourceMappingURL=timetable.types.js.map

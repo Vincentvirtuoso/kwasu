@@ -12,4 +12,5 @@ export declare enum AdminRole {
     HOSTEL_OFFICER = "hostel-officer",
     SUPER_ADMIN = "super-admin"
 }
+export type AnyRole = UserRole | AdminRole;
 //# sourceMappingURL=roles.enum.d.ts.map

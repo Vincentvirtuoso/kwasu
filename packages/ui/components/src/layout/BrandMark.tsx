@@ -45,7 +45,9 @@ export function BrandMark({
       />
       <div className="min-w-0">
         <div
-          className={cn("font-serif font-semibold leading-tight truncate")}
+          className={cn(
+            "font-serif font-semibold leading-tight truncate text-fg-muted",
+          )}
           style={{ letterSpacing: 0.3, fontSize: sizes.title }}
         >
           Kwara State University

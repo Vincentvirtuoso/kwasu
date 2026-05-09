@@ -1,2 +1,2 @@
-"use strict";
+export {};
 //# sourceMappingURL=election.types.js.map
