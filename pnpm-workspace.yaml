@@ -1,0 +1,8 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+  - "packages/ui/*"
+  - "packages/utils/*"
+neverBuiltDependencies:
+  - sharp
+  - unrs-resolver

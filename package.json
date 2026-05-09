@@ -1,0 +1,33 @@
+{
+  "name": "kwasu-portal",
+  "description": "This project redesigns the kwasu portal",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "start": "turbo run start",
+    "lint": "turbo run lint",
+    "type-check": "turbo run type-check",
+    "clean": "turbo run clean"
+  },
+  "keywords": [
+    "school portal",
+    "kwasu",
+    "dashboard"
+  ],
+  "devDependencies": {
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "copyfiles": "^2.4.1",
+    "turbo": "latest",
+    "typescript": "latest"
+  },
+  "pnpm": {
+    "neverBuiltDependencies": [
+      "sharp",
+      "unrs-resolver"
+    ]
+  },
+  "author": "Splenddev",
+  "private": true,
+  "packageManager": "pnpm@10.33.2"
+}

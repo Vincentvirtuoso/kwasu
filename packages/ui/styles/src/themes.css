@@ -1,0 +1,24 @@
+.dark {
+  --bg-base: #0a1a10;
+  --bg-surface: #0d2018;
+  --bg-elevated: #132a1e;
+  --bg-sunken: #071410;
+  --bg-overlay: rgba(0, 0, 0, 0.75);
+  --bg-nav: rgba(7, 20, 16, 0.97);
+  --bg-sidebar: #071410;
+
+  --fg-base: #e8f5ec;
+  --fg-muted: #9abfa8;
+  --fg-subtle: #6a9478;
+  --fg-placeholder: #4a7458;
+  --fg-inverted: var(--color-green-900);
+  --fg-on-gold: var(--color-green-900);
+
+  --border-base: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --border-focus: var(--color-gold-400);
+  --border-subtle: rgba(255, 255, 255, 0.04);
+
+  --brand-primary: var(--color-green-600);
+  --brand-secondary: var(--color-gold-400);
+}
