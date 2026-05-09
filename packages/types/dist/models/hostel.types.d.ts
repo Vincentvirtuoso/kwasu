@@ -1,1 +1,0 @@
-//# sourceMappingURL=hostel.types.d.ts.map
