@@ -107,8 +107,6 @@ textarea,
 select {
   background: var(--bg-surface);
   border: 1px solid var(--border-base);
-  border-radius: var(--radius-md);
-  padding: var(--space-2-5) var(--space-4);
   font-size: var(--text-sm);
   color: var(--fg-base);
   width: 100%;
@@ -141,14 +139,6 @@ select {
 textarea {
   resize: vertical;
   min-height: 100px;
-}
-
-label {
-  display: block;
-  font-size: var(--text-sm);
-  font-weight: var(--fw-medium);
-  color: var(--fg-base);
-  margin-bottom: var(--space-1-5);
 }
 
 fieldset {

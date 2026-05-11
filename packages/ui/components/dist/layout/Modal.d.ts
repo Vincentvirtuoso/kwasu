@@ -1,18 +1,29 @@
-import { type ReactNode } from "react";
-type ModalSize = "sm" | "md" | "lg" | "xl" | "full";
-interface ModalProps {
-    open: boolean;
+import React from "react";
+export interface ModalProps {
+    isOpen: boolean;
     onClose: () => void;
-    title?: ReactNode;
-    description?: string;
-    size?: ModalSize;
-    children: ReactNode;
-    footer?: ReactNode;
-    closeOnOverlay?: boolean;
+    children: React.ReactNode;
+    size?: "sm" | "md" | "lg" | "xl" | "full";
     className?: string;
+    closeOnOverlayClick?: boolean;
+    closeOnEsc?: boolean;
+    showCloseButton?: boolean;
 }
-export declare function Modal({ open, onClose, title, description, size, children, footer, closeOnOverlay, className, }: ModalProps): import("react/jsx-runtime").JSX.Element | null;
-/** Confirm dialog shorthand */
+export declare function Modal({ isOpen, onClose, children, size, className, closeOnOverlayClick, closeOnEsc, showCloseButton, }: ModalProps): import("react/jsx-runtime").JSX.Element;
+export declare namespace Modal {
+    var Header: ({ children, className, }: {
+        children: React.ReactNode;
+        className?: string;
+    }) => import("react/jsx-runtime").JSX.Element;
+    var Body: ({ children, className, }: {
+        children: React.ReactNode;
+        className?: string;
+    }) => import("react/jsx-runtime").JSX.Element;
+    var Footer: ({ children, className, }: {
+        children: React.ReactNode;
+        className?: string;
+    }) => import("react/jsx-runtime").JSX.Element;
+}
 interface ConfirmModalProps {
     open: boolean;
     onClose: () => void;

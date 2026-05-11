@@ -14,11 +14,13 @@ const options = [
 interface ThemeToggleProps {
   isCollapsed?: boolean;
   size?: "sm" | "md" | "lg";
+  showSystem?: boolean;
 }
 
 export const ThemeToggle = ({
   isCollapsed = false,
   size = "md",
+  showSystem = false,
 }: ThemeToggleProps) => {
   const { theme, setTheme } = useTheme();
 
@@ -48,45 +50,47 @@ export const ThemeToggle = ({
         isCollapsed ? "flex-col gap-1" : "flex-row",
       )}
     >
-      {options.map((opt) => {
-        const isActive = theme === opt.id;
+      {options
+        .filter((opt) => !showSystem && opt.id !== "system")
+        .map((opt) => {
+          const isActive = theme === opt.id;
 
-        return (
-          <button
-            key={opt.id}
-            onClick={() => setTheme(opt.id)}
-            className={cn(
-              "relative flex items-center justify-center font-medium z-10 rounded-lg transition-colors",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-focus",
-              isCollapsed ? "p-2 w-full" : cn(sizeConfig.button, "flex-1"),
-            )}
-            title={opt.label}
-          >
-            <opt.icon className={cn("shrink-0", sizeConfig.icon)} />
+          return (
+            <button
+              key={opt.id}
+              onClick={() => setTheme(opt.id)}
+              className={cn(
+                "relative flex items-center justify-center font-medium z-10 rounded-lg transition-colors",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-focus",
+                isCollapsed ? "p-2 w-full" : cn(sizeConfig.button, "flex-1"),
+              )}
+              title={opt.label}
+            >
+              <opt.icon className={cn("shrink-0", sizeConfig.icon)} />
 
-            {!isCollapsed && (
-              <motion.span
-                key={`label-${opt.id}`}
-                initial={{ opacity: 0, width: 0 }}
-                animate={{ opacity: 1, width: "auto" }}
-                exit={{ opacity: 0, width: 0 }}
-                className="hidden md:inline-block ml-1.5 whitespace-nowrap overflow-hidden"
-                transition={{ duration: 0.2 }}
-              >
-                {opt.label}
-              </motion.span>
-            )}
+              {!isCollapsed && (
+                <motion.span
+                  key={`label-${opt.id}`}
+                  initial={{ opacity: 0, width: 0 }}
+                  animate={{ opacity: 1, width: "auto" }}
+                  exit={{ opacity: 0, width: 0 }}
+                  className="hidden md:inline-block ml-1.5 whitespace-nowrap overflow-hidden"
+                  transition={{ duration: 0.2 }}
+                >
+                  {opt.label}
+                </motion.span>
+              )}
 
-            {isActive && (
-              <motion.div
-                layoutId="activeThemeTab"
-                className="absolute inset-0 bg-fg-subtle rounded-lg -z-10"
-                transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
-              />
-            )}
-          </button>
-        );
-      })}
+              {isActive && (
+                <motion.div
+                  layoutId="activeThemeTab"
+                  className="absolute inset-0 bg-fg-subtle rounded-lg -z-10"
+                  transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
+                />
+              )}
+            </button>
+          );
+        })}
     </div>
   );
 };

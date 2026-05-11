@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { BrandMark } from "@kwasu-portal/components";
+import { ThemeToggle } from "../common/ThemeToggle";
 
 const NAV_LINKS = [
   { label: "About", href: "/about" },
@@ -175,7 +176,7 @@ export function Navbar() {
             top: "var(--topbar-height)",
             left: 0,
             right: 0,
-            background: "var(--color-green-950)",
+            // background: "var(--color-green-950)",
             borderBottom: "1px solid rgba(201,168,76,0.2)",
             padding: "20px 24px 24px",
             display: "flex",
@@ -184,6 +185,7 @@ export function Navbar() {
             zIndex: "var(--z-fixed)",
             animation: "fade-down 0.2s ease both",
           }}
+          className="bg-fg-on-gold show-mobile-only"
         >
           {NAV_LINKS.map((link) => (
             <Link
@@ -203,6 +205,7 @@ export function Navbar() {
               {link.label}
             </Link>
           ))}
+          <ThemeToggle />
           <div style={{ display: "flex", gap: 10, marginTop: 20 }}>
             <Link
               href="/admissions"

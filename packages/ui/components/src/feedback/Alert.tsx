@@ -1,6 +1,7 @@
 "use client";
 import { cn } from "@kwasu-portal/utils-others";
 import type { HTMLAttributes, ReactNode } from "react";
+import { LuCheck, LuDot, LuInfo, LuTriangleAlert, LuX } from "react-icons/lu";
 
 type AlertVariant = "success" | "warning" | "danger" | "info" | "neutral";
 
@@ -9,48 +10,43 @@ const STYLES: Record<
   { wrapper: string; icon: string; title: string; body: string }
 > = {
   success: {
-    wrapper:
-      "bg-[var(--color-success-bg)]  border-[var(--color-success-light)]  text-[var(--color-success-dark)]",
-    icon: "text-[var(--color-success)]",
-    title: "text-[var(--color-success-dark)]",
-    body: "text-[var(--color-success-dark)] opacity-80",
+    wrapper: "bg-success-bg  border-success-light  text-success-dark",
+    icon: "text-success",
+    title: "text-success-dark",
+    body: "text-success-dark opacity-80",
   },
   warning: {
-    wrapper:
-      "bg-[var(--color-warning-bg)]  border-[var(--color-warning-light)]  text-[var(--color-warning-dark)]",
-    icon: "text-[var(--color-warning)]",
-    title: "text-[var(--color-warning-dark)]",
-    body: "text-[var(--color-warning-dark)] opacity-80",
+    wrapper: "bg-warning-bg  border-warning-light  text-warning-dark",
+    icon: "text-warning",
+    title: "text-warning-dark",
+    body: "text-warning-dark opacity-80",
   },
   danger: {
-    wrapper:
-      "bg-[var(--color-danger-bg)]   border-[var(--color-danger-light)]   text-[var(--color-danger-dark)]",
-    icon: "text-[var(--color-danger)]",
-    title: "text-[var(--color-danger-dark)]",
-    body: "text-[var(--color-danger-dark)] opacity-80",
+    wrapper: "bg-danger-bg   border-danger-light   text-danger-dark",
+    icon: "text-danger",
+    title: "text-danger-dark",
+    body: "text-danger-dark opacity-80",
   },
   info: {
-    wrapper:
-      "bg-[var(--color-info-bg)]     border-[var(--color-info-light)]     text-[var(--color-info-dark)]",
-    icon: "text-[var(--color-info)]",
-    title: "text-[var(--color-info-dark)]",
-    body: "text-[var(--color-info-dark)] opacity-80",
+    wrapper: "bg-info-bg     border-info-light     text-info-dark",
+    icon: "text-info",
+    title: "text-info-dark",
+    body: "text-info-dark opacity-80",
   },
   neutral: {
-    wrapper:
-      "bg-[var(--bg-elevated)]  border-[var(--border-base)]  text-[var(--fg-base)]",
-    icon: "text-[var(--fg-muted)]",
-    title: "text-[var(--fg-base)]",
-    body: "text-[var(--fg-muted)]",
+    wrapper: "bg-bg-elevated  border-border-base  text-fg-base",
+    icon: "text-fg-muted",
+    title: "text-fg-base",
+    body: "text-fg-muted",
   },
 };
 
-const DEFAULT_ICONS: Record<AlertVariant, string> = {
-  success: "✓",
-  warning: "⚠",
-  danger: "✕",
-  info: "ℹ",
-  neutral: "•",
+const DEFAULT_ICONS: Record<AlertVariant, ReactNode> = {
+  success: <LuCheck />,
+  warning: <LuTriangleAlert />,
+  danger: <LuX />,
+  info: <LuInfo />,
+  neutral: <LuDot />,
 };
 
 interface AlertProps extends HTMLAttributes<HTMLDivElement> {
@@ -78,10 +74,13 @@ export function Alert({
   return (
     <div
       role="alert"
-      className={cn("flex gap-3 rounded-xl border p-4", s.wrapper, className)}
+      className={cn(
+        "flex gap-3 rounded-xl border p-4 items-center",
+        s.wrapper,
+        className,
+      )}
       {...props}
     >
-      {/* Icon */}
       {!hideIcon && (
         <span
           className={cn(
@@ -94,7 +93,6 @@ export function Alert({
         </span>
       )}
 
-      {/* Content */}
       <div className="flex-1 min-w-0">
         {title && (
           <p className={cn("font-sans text-sm font-semibold mb-0.5", s.title)}>
@@ -109,7 +107,6 @@ export function Alert({
         {actions && <div className="mt-3 flex gap-2">{actions}</div>}
       </div>
 
-      {/* Dismiss */}
       {onDismiss && (
         <button
           onClick={onDismiss}
@@ -119,7 +116,7 @@ export function Alert({
             s.icon,
           )}
         >
-          ×
+          <LuX />
         </button>
       )}
     </div>

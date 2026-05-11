@@ -1,11 +1,24 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/hooks/useAuth";
-import { BrandMark, Alert, Input } from "@kwasu-portal/components";
-import { LuGraduationCap, LuLockKeyhole } from "react-icons/lu";
+import {
+  BrandMark,
+  Alert,
+  Input,
+  Checkbox,
+  Button,
+  Modal,
+} from "@kwasu-portal/components";
+import {
+  LuGraduationCap,
+  LuLockKeyhole,
+  LuSearch,
+  LuChevronRight,
+  LuArrowRight,
+} from "react-icons/lu";
 
 const PROGRAMMES = [
   "CAILS-KWASU Sandwich",
@@ -48,10 +61,28 @@ const PROGRAMMES = [
 export default function LoginPage() {
   const router = useRouter();
   const { login, loading: authLoading, isAuthenticated, user } = useAuth();
+
   const [matricNo, setMatricNo] = useState("");
+  const [rememberMe, setRememberMe] = useState<boolean>(false);
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const filteredProgrammes = useMemo(() => {
+    return PROGRAMMES.filter((p) =>
+      p.toLowerCase().includes(searchQuery.toLowerCase()),
+    );
+  }, [searchQuery]);
+  const onModalClose = () => {
+    setIsModalOpen(false);
+    setSearchQuery("");
+  };
+  const handleSelect = (programme: string) => {
+    onModalClose();
+    router.push(`/apply?programme=${encodeURIComponent(programme)}`);
+  };
 
   useEffect(() => {
     if (isAuthenticated && user) {
@@ -63,17 +94,9 @@ export default function LoginPage() {
     e.preventDefault();
     setError(null);
     setIsSubmitting(true);
-
-    if (!matricNo.trim() || !password.trim()) {
-      setError("Matric number and password are required");
-      setIsSubmitting(false);
-      return;
-    }
-
-    const result = await login(matricNo, password);
-
+    const result = await login(matricNo, password, rememberMe);
     if (!result.ok) {
-      setError(result.error || "Login failed. Please check your credentials.");
+      setError(result.error || "Login failed.");
       setIsSubmitting(false);
     } else {
       setIsSubmitting(false);
@@ -83,149 +106,180 @@ export default function LoginPage() {
   const isLoading = isSubmitting || authLoading;
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row">
-      {/* LEFT BANNER – Programmes & Branding */}
-      <div className="w-full md:w-1/2 bg-linear-to-br from-[#0a2b1f] to-[#1a4a33] text-white p-6 md:p-10 flex flex-col">
-        <BrandMark size="lg" className="mb-6 md:mb-10" alt="KWASU Logo" />
-        <div className="flex-1 overflow-y-auto">
-          <h2 className="font-serif text-2xl md:text-3xl font-bold mb-2">
-            Admission & Application Portals
-          </h2>
-          <p className="text-sm text-white/70 mb-6">
-            Select your programme to proceed with login
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
-            {PROGRAMMES.map((programme, idx) => (
-              <div
-                key={idx}
-                className="flex items-center gap-2 p-2 rounded hover:bg-white/10 transition-colors cursor-pointer"
-                onClick={() => {
-                  console.log("Selected:", programme);
-                }}
-              >
-                <span className="text-gold-400 text-lg">•</span>
-                <span className="truncate">{programme}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="mt-8 text-xs text-white/50 text-center border-t border-white/20 pt-4">
-          © {new Date().getFullYear()} Kwara State University
-        </div>
-      </div>
+    <div className="h-screen w-full flex flex-col md:flex-row bg-bg-base overflow-hidden">
+      <div className="hidden md:flex md:w-5/12 lg:w-1/2 bg-[#0a2b1f] text-white p-8 lg:p-12 flex-col relative h-full">
+        <div className="relative z-10 flex flex-col h-full overflow-hidden">
+          <BrandMark size="lg" className="mb-10 shrink-0" />
 
-      {/* RIGHT COLUMN – Login Form */}
-      <div className="w-full md:w-1/2 flex items-center justify-center bg-bg-base px-6 py-12 md:px-10 lg:px-16">
-        <div className="w-full max-w-md space-y-8">
-          <div className="text-center md:text-left">
-            <div className="mx-auto md:mx-0 h-12 w-12 rounded-full bg-color-gold-500 flex items-center justify-center mb-4">
-              <span className="text-white font-serif text-xl font-bold">K</span>
-            </div>
-            <h2 className="font-serif text-3xl font-bold tracking-tight text-fg-base">
-              Welcome back
+          <div className="mb-6 shrink-0">
+            <h2 className="text-3xl font-bold mb-2 tracking-tight">
+              New Applicant?
             </h2>
-            <p className="mt-2 text-sm text-fg-muted">
-              Sign in to your KWASU Portal account
+            <p className="text-white/60 text-sm">
+              Select your programme to start your application.
             </p>
           </div>
 
-          <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
+          {/* Search Box */}
+          <Input
+            placeholder="Filter programmes..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            leftIcon={<LuSearch className="text-white/40" />}
+            className="rounded-xl bg-white/5 border-white/10 text-white placeholder:text-white/40"
+          />
+
+          {/* Scrollable List */}
+          <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar space-y-2 pb-4 mt-4">
+            {filteredProgrammes.map((programme) => (
+              <button
+                key={programme}
+                onClick={() =>
+                  router.push(
+                    `/apply?programme=${encodeURIComponent(programme)}`,
+                  )
+                }
+                className="w-full flex items-center justify-between p-4 rounded-xl text-left text-sm transition-all group bg-white/5 hover:bg-white/10 text-white/80"
+              >
+                <span className="truncate pr-4 font-medium">{programme}</span>
+                <LuChevronRight className="shrink-0 group-hover:translate-x-1 transition-transform" />
+              </button>
+            ))}
+          </div>
+
+          <footer className="mt-auto pt-6 border-t border-white/10 text-[10px] uppercase tracking-widest text-white/30 shrink-0">
+            © {new Date().getFullYear()} Kwara State University
+          </footer>
+        </div>
+      </div>
+
+      {/* RIGHT PANEL: Login Form */}
+      <div className="w-full md:w-7/12 lg:w-1/2 flex flex-col items-center justify-center p-6 md:p-12 overflow-y-auto h-full">
+        {/* Mobile-Only Brand & New Applicant Button */}
+        <div className="md:hidden w-full flex flex-col items-center mb-8 shrink-0">
+          <BrandMark size="md" className="mb-4" direction="vertical" />
+        </div>
+
+        <div className="w-full max-w-sm py-8">
+          <div className="mb-8 text-center md:text-left">
+            <h1 className="text-3xl font-bold text-fg-base tracking-tight">
+              Student Login
+            </h1>
+            <p className="mt-2 text-sm text-fg-muted">
+              Sign in with your matric number and password
+            </p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-5">
             <Input
-              label="Matric Number"
-              type="text"
-              autoComplete="username"
-              required
+              label="Matric Number / Application Number"
+              placeholder="e.g. 21/00HS/000"
+              leftIcon={<LuGraduationCap className="text-fg-muted" />}
               value={matricNo}
               onChange={(e) => setMatricNo(e.target.value)}
-              placeholder="e.g., 21/XXXXX"
-              leftIcon={<LuGraduationCap />}
               disabled={isLoading}
+              required
             />
 
             <Input
               label="Password"
               type="password"
-              autoComplete="current-password"
-              required
+              placeholder="••••••••"
+              leftIcon={<LuLockKeyhole className="text-fg-muted" />}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-              leftIcon={<LuLockKeyhole />}
               disabled={isLoading}
+              required
             />
 
             {error && (
-              <Alert variant="danger" onDismiss={() => setError(null)}>
+              <Alert variant="danger" className="text-xs">
                 {error}
               </Alert>
             )}
 
             <div className="flex items-center justify-between">
-              <label className="flex items-center gap-2 text-sm text-fg-muted">
-                <input
-                  type="checkbox"
-                  className="rounded border-border-base text-color-gold-500 focus:ring-color-gold-500"
-                />
-                Remember me
-              </label>
+              <Checkbox
+                label="Remember me"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+              />
               <Link
                 href="/forgot-password"
-                className="text-sm font-semibold text-color-gold-600 hover:text-color-gold-500"
+                className="text-sm font-semibold whitespace-nowrap text-gold-600 hover:underline"
               >
                 Forgot password?
               </Link>
             </div>
 
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="group relative flex w-full justify-center rounded-lg bg-color-gold-500 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-color-gold-600 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-color-gold-500 disabled:opacity-70 disabled:cursor-not-allowed transition-colors"
+            <Button type="submit" disabled={isLoading} fullWidth size="lg">
+              {isLoading ? "Verifying..." : "Sign In to Portal"}
+            </Button>
+            <Button
+              onClick={() => {
+                setIsModalOpen(true);
+                setSearchQuery("");
+              }}
+              fullWidth
+              variant="ghost"
+              type="button"
+              className="md:hidden flex"
+              rightIcon={<LuArrowRight />}
             >
-              {isLoading ? (
-                <span className="flex items-center gap-2">
-                  <svg
-                    className="animate-spin h-4 w-4 text-white"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                      fill="none"
-                    />
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-                    />
-                  </svg>
-                  Signing in...
-                </span>
-              ) : (
-                "Sign in"
-              )}
-            </button>
+              New Applicant? Apply Here
+            </Button>
           </form>
 
-          <p className="mt-6 text-center text-xs text-fg-muted">
-            By continuing, you agree to our{" "}
-            <Link href="/terms" className="underline hover:text-color-gold-600">
+          <p className="mt-8 text-center text-xs text-fg-muted leading-loose">
+            By signing in, you agree to our{" "}
+            <Link
+              href="/terms"
+              className="font-medium text-fg-base hover:underline"
+            >
               Terms of Service
             </Link>{" "}
-            and{" "}
+            &{" "}
             <Link
               href="/privacy"
-              className="underline hover:text-color-gold-600"
+              className="font-medium text-fg-base hover:underline"
             >
               Privacy Policy
             </Link>
-            .
           </p>
         </div>
       </div>
+
+      {/* Mobile Programme Modal */}
+      <Modal isOpen={isModalOpen} onClose={onModalClose} className="h-120">
+        <Modal.Header>Select Programme</Modal.Header>
+        <div className="p-4">
+          <Input
+            placeholder="Filter programmes..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            leftIcon={<LuSearch className="text-fg-muted font-light" />}
+          />
+        </div>
+        <Modal.Body>
+          <div className="flex-1 space-y-2">
+            {filteredProgrammes.map((programme) => (
+              <button
+                key={programme}
+                onClick={() => handleSelect(programme)}
+                className="w-full flex items-center justify-between p-3 rounded-xl text-left text-sm hover:bg-bg-elevated transition-colors group"
+              >
+                <span className="truncate pr-4">{programme}</span>
+                <LuChevronRight className="shrink-0 text-fg-muted group-hover:translate-x-1 transition-transform" />
+              </button>
+            ))}
+            {filteredProgrammes.length === 0 && (
+              <p className="text-center text-fg-muted py-8">
+                No programmes found
+              </p>
+            )}
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }

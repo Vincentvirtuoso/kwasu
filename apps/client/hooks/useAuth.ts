@@ -57,6 +57,7 @@ export function useAuth() {
     async (
       matricNo: string,
       password: string,
+      rememberMe: boolean = false,
     ): Promise<{ ok: boolean; error?: string }> => {
       setLoading(true);
       try {
@@ -65,6 +66,7 @@ export function useAuth() {
           {
             matricNo,
             password,
+            rememberMe,
           },
         );
         setUser(res.data.user);

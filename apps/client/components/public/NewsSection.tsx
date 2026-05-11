@@ -84,7 +84,7 @@ function formatNumber(n: number): string {
 
 export function NewsSection() {
   return (
-    <section className="bg-cream-100 py-24 md:py-25 px-[clamp(20px,5vw,80px)]">
+    <section className="py-24 md:py-25 px-[clamp(20px,5vw,80px)]">
       <div className="flex flex-wrap items-end justify-between gap-4 mb-12 md:mb-14">
         <div>
           <span className="inline-block font-sans text-xs font-bold text-green-700 uppercase tracking-[0.2em] bg-green-100/70 px-3 py-1 rounded-full mb-3">
@@ -113,7 +113,7 @@ export function NewsSection() {
           <Link
             key={item.id}
             href={`/news/${item.id}`}
-            className={`group/card block rounded-2xl overflow-hidden border border-cream-300 bg-white shadow-xs transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-gold-500
+            className={`group/card block rounded-2xl overflow-hidden border border-cream-300 bg-bg-surface shadow-xs transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-gold-500
               ${item.featured ? "md:row-span-2" : ""}`}
           >
             <div

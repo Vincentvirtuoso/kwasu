@@ -1,9 +1,9 @@
-import React from "react";
 import { cn } from "@kwasu-portal/utils-others";
 
 interface BrandMarkProps {
   logoOnly?: boolean;
   size?: "sm" | "md" | "lg";
+  direction?: "horizontal" | "vertical";
   className?: string;
   src?: string;
   alt?: string;
@@ -18,6 +18,7 @@ const sizeConfig = {
 export function BrandMark({
   logoOnly = false,
   size = "md",
+  direction = "horizontal",
   className,
   src = "/kwasu-logo.png",
   alt = "Kwara State University logo",
@@ -35,15 +36,25 @@ export function BrandMark({
     );
   }
 
+  const isVertical = direction === "vertical";
+
   return (
-    <div className={cn("flex items-center gap-1", className)}>
+    <div
+      className={cn(
+        "flex",
+        isVertical
+          ? "flex-col items-center text-center gap-2"
+          : "flex-row items-center gap-1",
+        className,
+      )}
+    >
       <img
         src={src}
         alt={alt}
-        className={cn("object-contain rounded-lg flex-shrink-0")}
+        className="object-contain rounded-lg flex-shrink-0"
         style={{ height: sizes.image, width: sizes.image }}
       />
-      <div className="min-w-0">
+      <div className={isVertical ? "" : "min-w-0"}>
         <div
           className={cn(
             "font-serif font-semibold leading-tight truncate text-fg-muted",

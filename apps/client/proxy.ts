@@ -12,7 +12,17 @@ const JWT_SECRET = new TextEncoder().encode(
   process.env.JWT_SECRET || "fallback-secret",
 );
 
-const PUBLIC_PATHS = ["/", "/login", "/forgot-password", "/reset-password"];
+const PUBLIC_PATHS = [
+  "/",
+  "/login",
+  "/forgot-password",
+  "/reset-password",
+  "/not-found",
+  "/privacy",
+  "/terms",
+  "/apply",
+  "/support",
+];
 const PUBLIC_PREFIXES = [
   "/news",
   "/blog",
