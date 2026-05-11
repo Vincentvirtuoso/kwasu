@@ -5,6 +5,7 @@
     "declarationMap": true,
     "rootDir": "src",
     "outDir": "dist",
+    "declarationDir": "dist",
     "moduleResolution": "bundler"
   },
   "references": [
