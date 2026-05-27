@@ -1,18 +1,42 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
-import { useRole } from "@/hooks/useRole";
 import { useAuth } from "@/hooks/useAuth";
+import { useRole } from "@/hooks/useRole";
 import { UserRole } from "@kwasu-portal/types";
+import { cn } from "@kwasu-portal/utils-others";
+import {
+  LuLayoutDashboard as LayoutDashboard,
+  LuBookOpen as BookOpen,
+  LuCalendar as Calendar,
+  LuFileText as FileText,
+  LuMegaphone as Megaphone,
+  LuBell as Bell,
+  LuSquarePen as PenSquare,
+  LuMessageCircle as MessageCircle,
+  LuCreditCard as CreditCard,
+  LuReceipt as Receipt,
+  LuFileText as FileText2,
+  LuArrowLeftRight as ArrowLeftRight,
+  LuBuilding2 as Building2,
+  LuCircleCheck as CheckCircle,
+  LuBriefcase as Briefcase,
+  LuRefreshCw as RefreshCw,
+  LuVote as Vote,
+  LuTicket as Ticket,
+  LuStar as Star,
+  LuChevronLeft as ChevronLeft,
+  LuChevronRight as ChevronRight,
+} from "react-icons/lu";
+import { FiBarChart2 } from "react-icons/fi";
+import { BrandMark } from "@kwasu-portal/components";
 
-// ── Nav structure ──────────────────────────────────────────────
 interface NavItem {
   label: string;
   href: string;
-  icon: string;
+  icon: React.ReactNode;
   badge?: number;
-  roles?: UserRole[]; // if set, only visible to these roles
+  roles?: UserRole[];
 }
 
 interface NavGroup {
@@ -23,15 +47,37 @@ interface NavGroup {
 const NAV: NavGroup[] = [
   {
     label: "Overview",
-    items: [{ label: "Dashboard", href: "/dashboard", icon: "⌂" }],
+    items: [
+      {
+        label: "Dashboard",
+        href: "/dashboard",
+        icon: <LayoutDashboard className="w-5 h-5" />,
+      },
+    ],
   },
   {
     label: "Academic",
     items: [
-      { label: "Courses", href: "/academic/courses", icon: "📚" },
-      { label: "Timetable", href: "/academic/timetable", icon: "🗓" },
-      { label: "Results", href: "/academic/results", icon: "📊" },
-      { label: "Transcript", href: "/academic/transcript", icon: "📄" },
+      {
+        label: "Courses",
+        href: "/academic/courses",
+        icon: <BookOpen className="w-5 h-5" />,
+      },
+      {
+        label: "Timetable",
+        href: "/academic/timetable",
+        icon: <Calendar className="w-5 h-5" />,
+      },
+      {
+        label: "Results",
+        href: "/academic/results",
+        icon: <FiBarChart2 className="w-5 h-5" />,
+      },
+      {
+        label: "Transcript",
+        href: "/academic/transcript",
+        icon: <FileText className="w-5 h-5" />,
+      },
     ],
   },
   {
@@ -40,23 +86,23 @@ const NAV: NavGroup[] = [
       {
         label: "Announcements",
         href: "/communication/announcements",
-        icon: "📢",
+        icon: <Megaphone className="w-5 h-5" />,
       },
       {
         label: "Notifications",
         href: "/communication/notifications",
-        icon: "🔔",
+        icon: <Bell className="w-5 h-5" />,
       },
       {
         label: "Post Announcement",
         href: "/communication/announcements/new",
-        icon: "✏️",
+        icon: <PenSquare className="w-5 h-5" />,
         roles: [UserRole.CLASS_REP, UserRole.ASSISTANT_REP],
       },
       {
         label: "WhatsApp Links",
         href: "/communication/whatsapp-links",
-        icon: "💬",
+        icon: <MessageCircle className="w-5 h-5" />,
         roles: [UserRole.CLASS_REP, UserRole.ASSISTANT_REP],
       },
     ],
@@ -64,75 +110,77 @@ const NAV: NavGroup[] = [
   {
     label: "Finance",
     items: [
-      { label: "Fees", href: "/finance/fees", icon: "💳" },
-      { label: "Receipts", href: "/finance/receipts", icon: "🧾" },
-      { label: "Invoices", href: "/finance/invoices", icon: "📑" },
-      { label: "Transactions", href: "/finance/transactions", icon: "↔" },
+      {
+        label: "Fees",
+        href: "/finance/fees",
+        icon: <CreditCard className="w-5 h-5" />,
+      },
+      {
+        label: "Receipts",
+        href: "/finance/receipts",
+        icon: <Receipt className="w-5 h-5" />,
+      },
+      {
+        label: "Invoices",
+        href: "/finance/invoices",
+        icon: <FileText2 className="w-5 h-5" />,
+      },
+      {
+        label: "Transactions",
+        href: "/finance/transactions",
+        icon: <ArrowLeftRight className="w-5 h-5" />,
+      },
     ],
   },
   {
     label: "Services",
     items: [
-      { label: "Hostel", href: "/services/hostel", icon: "🏠" },
-      { label: "Clearance", href: "/services/clearance", icon: "✅" },
-      { label: "SIWES", href: "/services/siwes", icon: "💼" },
+      {
+        label: "Hostel",
+        href: "/services/hostel",
+        icon: <Building2 className="w-5 h-5" />,
+      },
+      {
+        label: "Clearance",
+        href: "/services/clearance",
+        icon: <CheckCircle className="w-5 h-5" />,
+      },
+      {
+        label: "SIWES",
+        href: "/services/siwes",
+        icon: <Briefcase className="w-5 h-5" />,
+      },
       {
         label: "Programme Change",
         href: "/services/programme-change",
-        icon: "🔄",
+        icon: <RefreshCw className="w-5 h-5" />,
       },
-      { label: "Election", href: "/services/election", icon: "🗳" },
-      { label: "Tickets", href: "/services/tickets", icon: "🎫" },
+      {
+        label: "Election",
+        href: "/services/election",
+        icon: <Vote className="w-5 h-5" />,
+      },
+      {
+        label: "Tickets",
+        href: "/services/tickets",
+        icon: <Ticket className="w-5 h-5" />,
+      },
     ],
   },
   {
     label: "Feedback",
-    items: [{ label: "Rate Lecturer", href: "/rate-lecturer", icon: "⭐" }],
+    items: [
+      {
+        label: "Rate Lecturer",
+        href: "/rate-lecturer",
+        icon: <Star className="w-5 h-5" />,
+      },
+    ],
   },
 ];
 
-// ── Sub-components ─────────────────────────────────────────────
 function SidebarLogo({ collapsed }: { collapsed: boolean }) {
-  return (
-    <Link
-      href="/dashboard"
-      className="flex items-center gap-3 px-5 py-5 border-b border-white/[0.07] shrink-0"
-      style={{ textDecoration: "none" }}
-    >
-      {/* Mark */}
-      <div
-        className="shrink-0 flex items-center justify-center rounded-lg font-serif font-bold text-[var(--color-green-900)]"
-        style={{
-          width: 36,
-          height: 36,
-          background: "var(--color-gold-500)",
-          fontSize: 14,
-          letterSpacing: -0.5,
-          flexShrink: 0,
-        }}
-      >
-        KW
-      </div>
-
-      {/* Wordmark — hidden when collapsed */}
-      {!collapsed && (
-        <div className="flex flex-col leading-tight overflow-hidden">
-          <span
-            className="font-serif font-semibold text-white truncate"
-            style={{ fontSize: 13, letterSpacing: 0.2 }}
-          >
-            KWASU Portal
-          </span>
-          <span
-            className="font-sans font-semibold uppercase text-[var(--color-gold-500)] tracking-[0.15em]"
-            style={{ fontSize: 8 }}
-          >
-            Student
-          </span>
-        </div>
-      )}
-    </Link>
-  );
+  return <BrandMark href="/dashboard" logoOnly={collapsed} className="py-3" />;
 }
 
 function NavLink({
@@ -148,17 +196,16 @@ function NavLink({
     <Link
       href={item.href}
       title={collapsed ? item.label : undefined}
-      className={[
-        "flex items-center gap-3 rounded-lg transition-all duration-150 select-none",
-        "text-sm font-medium font-sans",
+      className={cn(
+        "flex items-center gap-3 rounded-lg transition-all duration-150 select-none text-sm font-medium font-sans",
         collapsed ? "w-10 h-10 justify-center px-0" : "px-3 py-2.5",
         active
-          ? "bg-[rgba(201,168,76,0.14)] text-[var(--color-gold-400)] font-semibold"
-          : "text-white/50 hover:bg-white/[0.06] hover:text-white/85",
-      ].join(" ")}
+          ? "bg-[rgba(201,168,76,0.14)] text-gold-400 font-semibold"
+          : "text-white/50 hover:bg-white/6 hover:text-white/85",
+      )}
       style={{ textDecoration: "none" }}
     >
-      <span className="shrink-0 text-base leading-none" aria-hidden="true">
+      <span className="shrink-0" aria-hidden="true">
         {item.icon}
       </span>
 
@@ -166,14 +213,7 @@ function NavLink({
         <>
           <span className="flex-1 truncate">{item.label}</span>
           {item.badge !== undefined && item.badge > 0 && (
-            <span
-              className="shrink-0 font-mono text-[10px] font-bold rounded-full px-1.5 py-0.5 min-w-[18px] text-center"
-              style={{
-                background: "var(--color-danger)",
-                color: "#fff",
-                fontSize: 10,
-              }}
-            >
+            <span className="shrink-0 font-mono text-[10px] font-bold rounded-full px-1.5 py-0.5 min-w-4.5 text-center bg-danger text-white">
               {item.badge > 99 ? "99+" : item.badge}
             </span>
           )}
@@ -203,14 +243,13 @@ function UserFooter({
     <div className="shrink-0 border-t border-white/[0.07] p-3">
       <Link
         href="/profile"
-        className={[
-          "flex items-center gap-3 rounded-lg p-2 transition-colors hover:bg-white/[0.06]",
-          collapsed ? "justify-center" : "",
-        ].join(" ")}
+        className={cn(
+          "flex items-center gap-3 rounded-lg p-2 transition-colors hover:bg-white/6",
+          collapsed && "justify-center",
+        )}
         style={{ textDecoration: "none" }}
         title={collapsed ? `${user.firstName} ${user.lastName}` : undefined}
       >
-        {/* Avatar */}
         <div
           className="shrink-0 flex items-center justify-center rounded-full font-sans font-semibold"
           style={{
@@ -239,7 +278,6 @@ function UserFooter({
   );
 }
 
-// ── Main Sidebar ───────────────────────────────────────────────
 interface SidebarProps {
   collapsed: boolean;
   mobileOpen: boolean;
@@ -264,7 +302,6 @@ export function Sidebar({
       ? pathname === "/dashboard"
       : pathname.startsWith(href);
 
-  // Inject unread badge into Notifications item
   const enriched = NAV.map((group) => ({
     ...group,
     items: group.items.map((item) =>
@@ -276,48 +313,46 @@ export function Sidebar({
 
   return (
     <>
-      {/* Mobile backdrop */}
       {mobileOpen && (
         <div
-          className="fixed inset-0 z-[290] bg-black/50 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-290 bg-black/50 backdrop-blur-sm lg:hidden"
           onClick={onMobileClose}
           aria-hidden="true"
         />
       )}
 
-      {/* Sidebar panel */}
       <aside
-        className={[
-          "fixed top-0 left-0 bottom-0 z-[300] flex flex-col",
-          "bg-[var(--color-green-950)] transition-all duration-300 ease-in-out",
-          // Desktop: always visible, width toggles
+        className={cn(
+          "fixed top-0 left-0 bottom-0 z-300 flex flex-col pr-0.75",
+          "bg-green-950 transition-all duration-300 ease-in-out",
           "lg:translate-x-0",
-          collapsed ? "lg:w-[72px]" : "lg:w-[260px]",
-          // Mobile: slide in/out
+          collapsed ? "lg:w-18" : "lg:w-65",
           mobileOpen
-            ? "translate-x-0 w-[260px]"
-            : "-translate-x-full w-[260px] lg:translate-x-0",
-        ].join(" ")}
+            ? "translate-x-0 w-65"
+            : "-translate-x-full w-65 lg:translate-x-0",
+        )}
       >
         <SidebarLogo collapsed={collapsed} />
 
-        {/* Collapse toggle — desktop only */}
         <button
           onClick={() => onCollapse(!collapsed)}
           aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-          className={[
-            "hidden lg:flex absolute -right-3 top-[72px]",
+          className={cn(
+            "hidden lg:flex absolute -right-3 top-18",
             "w-6 h-6 rounded-full items-center justify-center",
-            "bg-[var(--color-green-800)] border border-white/10",
-            "text-white/50 hover:text-white hover:bg-[var(--color-green-700)]",
-            "transition-all duration-150 text-xs",
+            "bg-green-800 border border-white/10",
+            "text-white/50 hover:text-white hover:bg-green-700",
+            "transition-all duration-150",
             "z-10",
-          ].join(" ")}
+          )}
         >
-          {collapsed ? "›" : "‹"}
+          {collapsed ? (
+            <ChevronRight className="w-3.5 h-3.5" />
+          ) : (
+            <ChevronLeft className="w-3.5 h-3.5" />
+          )}
         </button>
 
-        {/* Nav scroll area */}
         <nav className="flex-1 overflow-y-auto overflow-x-hidden py-4 px-3 space-y-6">
           {enriched.map((group) => {
             const visibleItems = group.items.filter(
@@ -328,10 +363,7 @@ export function Sidebar({
             return (
               <div key={group.label}>
                 {!collapsed && (
-                  <p
-                    className="font-sans font-semibold uppercase tracking-[0.18em] text-white/25 mb-2 px-3"
-                    style={{ fontSize: 9 }}
-                  >
+                  <p className="font-sans font-semibold uppercase tracking-[0.18em] text-white/25 mb-2 px-3 text-[9px]">
                     {group.label}
                   </p>
                 )}
@@ -350,7 +382,6 @@ export function Sidebar({
           })}
         </nav>
 
-        {/* User footer */}
         <UserFooter
           collapsed={collapsed}
           user={

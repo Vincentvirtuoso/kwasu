@@ -6,7 +6,10 @@ interface BrandMarkProps {
   direction?: "horizontal" | "vertical";
   className?: string;
   src?: string;
+  href?: string;
   alt?: string;
+  title?: string;
+  subtitle?: string;
 }
 
 const sizeConfig = {
@@ -22,11 +25,30 @@ export function BrandMark({
   className,
   src = "/kwasu-logo.png",
   alt = "Kwara State University logo",
+  title = "Kwara State University",
+  subtitle = "The Green University",
+  href,
 }: BrandMarkProps) {
   const sizes = sizeConfig[size];
 
   if (logoOnly) {
-    return (
+    return href ? (
+      <div
+        style={{
+          height: sizes.image,
+          width: sizes.image,
+          textDecoration: "none",
+        }}
+        className={cn(
+          "flex items-center justify-center place-self-center",
+          className,
+        )}
+      >
+        <a href={href} aria-label={alt}>
+          <img src={src} alt={alt} className="object-contain rounded-lg" />
+        </a>
+      </div>
+    ) : (
       <img
         src={src}
         alt={alt}
@@ -38,16 +60,8 @@ export function BrandMark({
 
   const isVertical = direction === "vertical";
 
-  return (
-    <div
-      className={cn(
-        "flex",
-        isVertical
-          ? "flex-col items-center text-center gap-2"
-          : "flex-row items-center gap-1",
-        className,
-      )}
-    >
+  const content = (
+    <>
       <img
         src={src}
         alt={alt}
@@ -61,7 +75,7 @@ export function BrandMark({
           )}
           style={{ letterSpacing: 0.3, fontSize: sizes.title }}
         >
-          Kwara State University
+          {title}
         </div>
         <div
           className={cn(
@@ -69,9 +83,41 @@ export function BrandMark({
           )}
           style={{ fontSize: sizes.tagline }}
         >
-          The Green University
+          {subtitle}
         </div>
       </div>
+    </>
+  );
+
+  if (href) {
+    return (
+      <a
+        href={href}
+        className={cn(
+          "flex",
+          isVertical
+            ? "flex-col items-center text-center gap-2"
+            : "flex-row items-center gap-1",
+          className,
+        )}
+        style={{ textDecoration: "none" }}
+      >
+        {content}
+      </a>
+    );
+  }
+
+  return (
+    <div
+      className={cn(
+        "flex",
+        isVertical
+          ? "flex-col items-center text-center gap-2"
+          : "flex-row items-center gap-1",
+        className,
+      )}
+    >
+      {content}
     </div>
   );
 }

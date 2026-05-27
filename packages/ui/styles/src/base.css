@@ -102,30 +102,12 @@ button:disabled {
   opacity: 0.5;
 }
 
-input,
-textarea,
-select {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-base);
-  font-size: var(--text-sm);
-  color: var(--fg-base);
-  width: 100%;
-  transition:
-    border-color var(--duration-normal) var(--ease-out),
-    box-shadow var(--duration-normal) var(--ease-out);
-}
-
 input:focus,
 textarea:focus,
 select:focus {
   border-color: var(--border-focus);
   box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.15);
   outline: none;
-}
-
-input::placeholder,
-textarea::placeholder {
-  color: var(--fg-placeholder);
 }
 
 select {

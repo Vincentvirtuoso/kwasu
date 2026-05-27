@@ -30,6 +30,7 @@ export interface User {
   lastName: string;
   middleName?: string;
   phone?: string;
+  passwordHash: string;
   avatarUrl?: string;
   role: UserRole;
   level: AcademicLevel;

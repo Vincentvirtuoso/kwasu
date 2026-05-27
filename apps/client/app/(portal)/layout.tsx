@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import { Sidebar } from "@/components/portal/Sidebar";
 import { Topbar } from "@/components/portal/Topbar";
 import { NotificationPanel } from "@/components/portal/NotificationPanel";
-import { useAuth } from "@/hooks/useAuth";
 import { useNotifications } from "@/hooks/useNotifications";
 import { PageSpinner } from "@kwasu-portal/components";
+import { useAuth } from "@/context/AuthContext";
 
 export default function PortalLayout({
   children,
@@ -15,12 +15,13 @@ export default function PortalLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const { user, loading } = useAuth();
+  const { user, isLoading: loading } = useAuth();
   const { unreadCount } = useNotifications(user?.id);
 
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     if (!loading && !user) router.replace("/login");
@@ -28,21 +29,33 @@ export default function PortalLayout({
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 1024px)");
-    if (mq.matches) setSidebarCollapsed(true);
-    const handler = (e: MediaQueryListEvent) => setSidebarCollapsed(e.matches);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
+
+    const handleChange = (e: MediaQueryListEvent | MediaQueryList) => {
+      setIsMobile(e.matches);
+      if (e.matches) {
+        setSidebarCollapsed(true);
+      } else {
+      }
+    };
+
+    handleChange(mq);
+    mq.addEventListener("change", handleChange);
+    return () => mq.removeEventListener("change", handleChange);
   }, []);
 
   useEffect(() => {
     setMobileMenuOpen(false);
   }, []);
 
+  useEffect(() => {
+    if (isMobile) setSidebarCollapsed(false);
+  }, [isMobile]);
+
   if (loading) return <PageSpinner label="Loading portal…" />;
 
   if (!user) return null;
 
-  const sidebarWidth = sidebarCollapsed ? 72 : 260;
+  const sidebarWidth = isMobile ? 0 : sidebarCollapsed ? 72 : 260;
 
   return (
     <div className="min-h-screen bg-bg-base">
@@ -63,9 +76,13 @@ export default function PortalLayout({
           onMobileMenuOpen={() => setMobileMenuOpen(true)}
           onNotifOpen={() => setNotifOpen(true)}
           unreadCount={unreadCount}
+          isMobile={isMobile}
         />
 
-        <main id="main-content" className="flex-1 p-6 lg:p-8">
+        <main
+          // id="main-content"
+          className="flex-1 p-6 lg:p-8"
+        >
           {children}
         </main>
 

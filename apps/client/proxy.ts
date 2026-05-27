@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { jwtVerify } from "jose";
+// import { jwtVerify } from "jose";
 
 export const config = {
   matcher: [
@@ -7,10 +7,10 @@ export const config = {
   ],
 };
 
-const SESSION_COOKIE = "better-auth.session_token";
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || "fallback-secret",
-);
+// const SESSION_COOKIE = "better-auth.session_token";
+// const JWT_SECRET = new TextEncoder().encode(
+//   process.env.JWT_SECRET || "fallback-secret",
+// );
 
 const PUBLIC_PATHS = [
   "/",
@@ -31,6 +31,7 @@ const PUBLIC_PREFIXES = [
   "/lecturers",
   "/graduates",
 ];
+const authRoutes = ["/login", "/apply", "/forgot-password", "/reset-password"];
 
 function isPublic(pathname: string) {
   if (PUBLIC_PATHS.includes(pathname)) return true;
@@ -38,19 +39,25 @@ function isPublic(pathname: string) {
 }
 
 async function getSessionToken(request: NextRequest) {
-  const token = request.cookies.get(SESSION_COOKIE)?.value;
-  if (!token) return null;
+  // const token = request.cookies.get(SESSION_COOKIE)?.value;
+  // if (!token) return null;
 
-  try {
-    const { payload } = await jwtVerify(token, JWT_SECRET);
-    return payload;
-  } catch {
-    return null;
-  }
+  // try {
+  //   const { payload } = await jwtVerify(token, JWT_SECRET);
+  //   return payload;
+  // } catch {
+  //   return null;
+  // }
+  const sessionCookie = request.cookies.get("session")?.value;
+  return sessionCookie === "true";
 }
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  const isAuthRoute = authRoutes.some(
+    (route) => pathname === route || pathname.startsWith(`${route}/`),
+  );
 
   if (isPublic(pathname)) {
     return NextResponse.next();
@@ -62,6 +69,13 @@ export async function proxy(request: NextRequest) {
     const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(loginUrl);
+  }
+
+  if (isAuthRoute) {
+    if (session) {
+      return NextResponse.redirect(new URL("/dashboard", request.url));
+    }
+    return NextResponse.next();
   }
 
   return NextResponse.next();

@@ -16,9 +16,7 @@ export default function NotFound() {
           <BrandMark size="lg" direction="vertical" />
         </div>
 
-        <h1 className="text-8xl font-bold text-color-gold-500 font-serif mb-4">
-          404
-        </h1>
+        <h1 className="text-8xl font-bold font-serif mb-4">404</h1>
 
         <h2 className="text-2xl font-semibold text-fg-base mb-2">
           Page Not Found
@@ -29,13 +27,13 @@ export default function NotFound() {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <Button onClick={() => router.back()} variant="ghost-inverted">
+          <Button onClick={() => router.back()} variant="ghost">
             <LuArrowLeft size={18} />
             Go Back
           </Button>
           <Link
             href="/"
-            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-color-gold-500 text-white hover:bg-color-gold-600 transition-colors shadow-md"
+            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-gold-500 hover:bg-gold-600 transition-colors shadow-md"
           >
             <LuHouse size={18} />
             Back to Home
@@ -45,10 +43,7 @@ export default function NotFound() {
         <div className="mt-12 pt-6 border-t border-border-base text-xs text-fg-muted">
           <p>
             Need help?{" "}
-            <Link
-              href="/support"
-              className="text-color-gold-600 hover:underline"
-            >
+            <Link href="/support" className="text-gold-600 hover:underline">
               Contact Support
             </Link>
           </p>

@@ -78,7 +78,6 @@ export function Modal({
     <AnimatePresence>
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
-          {/* Backdrop */}
           <motion.div
             ref={overlayRef}
             initial={{ opacity: 0 }}
@@ -88,15 +87,14 @@ export function Modal({
             onClick={handleOverlayClick}
           />
 
-          {/* Modal Container */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 10 }}
             transition={{ type: "spring", duration: 0.4, bounce: 0.3 }}
             className={cn(
-              "relative z-50 flex flex-col w-full bg-bg-surface shadow-2xl rounded-2xl overflow-hidden",
-              "max-h-[calc(100vh-2rem)]", // Ensure it never exceeds screen height
+              "relative z-50 flex flex-col w-full bg-bg-surface shadow-2xl rounded-2xl overflow-hidden pr-0.5",
+              "max-h-[calc(100vh-2rem)]",
               sizeClasses[size],
               className,
             )}

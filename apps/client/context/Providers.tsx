@@ -1,12 +1,12 @@
 import React from "react";
-import { ThemeProvider } from "./ThemeProvider";
 import { ToastProvider } from "@kwasu-portal/components";
+import { AuthProvider } from "./AuthContext";
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
-    <ThemeProvider>
-      <ToastProvider>{children}</ToastProvider>
-    </ThemeProvider>
+    <ToastProvider>
+      <AuthProvider>{children}</AuthProvider>
+    </ToastProvider>
   );
 };
 

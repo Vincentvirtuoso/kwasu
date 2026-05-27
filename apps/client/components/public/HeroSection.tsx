@@ -1,81 +1,19 @@
 "use client";
-import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { LuGraduationCap, LuPlay } from "react-icons/lu";
 import Image from "next/image";
 
 export function HeroSection() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  // Animated particle/dot grid — unchanged
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    let raf: number;
-    let t = 0;
-
-    const resize = () => {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-    };
-    resize();
-    window.addEventListener("resize", resize);
-
-    const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const cols = Math.ceil(canvas.width / 48);
-      const rows = Math.ceil(canvas.height / 48);
-
-      for (let r = 0; r <= rows; r++) {
-        for (let c = 0; c <= cols; c++) {
-          const x = c * 48;
-          const y = r * 48;
-          const dist = Math.sqrt(
-            (x - canvas.width * 0.65) ** 2 + (y - canvas.height * 0.5) ** 2,
-          );
-          const wave = Math.sin(dist * 0.018 - t * 0.8) * 0.5 + 0.5;
-          const alpha = wave * 0.18;
-
-          ctx.beginPath();
-          ctx.arc(x, y, 1.5, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(201,168,76,${alpha})`;
-          ctx.fill();
-        }
-      }
-
-      t += 0.025;
-      raf = requestAnimationFrame(draw);
-    };
-
-    draw();
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("resize", resize);
-    };
-  }, []);
-
   return (
     <section
       className="relative flex items-center justify-center overflow-hidden bg-[linear-gradient(160deg,var(--color-green-950)_0%,#0d2a1c_55%,#0a2018_100%)] pt-(--topbar-height)"
       style={{ minHeight: "100dvh" }}
     >
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 w-full h-full pointer-events-none"
-      />
-
       <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_70%_60%_at_68%_52%,rgba(26,74,46,0.5)_0%,transparent_70%)]" />
-
-      <div className="absolute right-[-10%] top-1/2 -translate-y-1/2 w-[55vw] h-[55vw] max-w-200 max-h-200 rounded-full border border-gold-500/10 pointer-events-none" />
-      <div className="absolute right-[-18%] top-1/2 -translate-y-1/2 w-[65vw] h-[65vw] max-w-240 max-h-240 rounded-full border border-gold-500/5 pointer-events-none" />
 
       <div className="relative z-10 w-full grid grid-cols-1 lg:grid-cols-2 gap-0 items-center min-h-[calc(100vh-var(--topbar-height))] px-[clamp(20px,5vw,80px)] py-20">
         <div>
           <div className="inline-flex items-center gap-2 px-4 py-1.5 border border-gold-500/30 rounded-full bg-gold-500/10 mb-9 animate-[fade-up_0.7s_ease_both]">
-            <span className="w-1.5 h-1.5 bg-gold-400 rounded-full animate-[dot-blink_2s_ease_infinite]" />
             <span className="font-sans text-xs font-semibold text-gold-400 tracking-[0.18em] uppercase">
               Est. 2009 · Malete, Kwara State
             </span>
@@ -104,24 +42,6 @@ export function HeroSection() {
             <button className="px-7 py-4 bg-transparent border border-white/20 rounded-lg font-sans text-[15px] font-medium text-white/75 inline-flex items-center gap-2.5 transition-all duration-300 hover:border-white/40 hover:bg-white/5">
               <LuPlay /> Virtual Tour
             </button>
-          </div>
-
-          <div className="flex gap-10 mt-16 pt-10 border-t border-white/10 animate-[fade-up_0.7s_0.45s_ease_both]">
-            {[
-              { val: "25K+", lbl: "Students" },
-              { val: "120+", lbl: "Programmes" },
-              { val: "14", lbl: "Faculties" },
-              { val: "16yrs", lbl: "Excellence" },
-            ].map((s) => (
-              <div key={s.lbl}>
-                <div className="font-serif text-[clamp(22px,2.5vw,32px)] font-semibold text-gold-400 leading-none">
-                  {s.val}
-                </div>
-                <div className="font-sans text-[11px] font-semibold text-white/35 tracking-[0.12em] uppercase mt-1.5">
-                  {s.lbl}
-                </div>
-              </div>
-            ))}
           </div>
         </div>
         <div className="hidden lg:flex items-center justify-center pl-10 animate-[fade-left_0.8s_0.35s_ease_both]">

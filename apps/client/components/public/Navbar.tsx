@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { BrandMark } from "@kwasu-portal/components";
-import { ThemeToggle } from "../common/ThemeToggle";
 
 const NAV_LINKS = [
   { label: "About", href: "/about" },
@@ -205,7 +204,6 @@ export function Navbar() {
               {link.label}
             </Link>
           ))}
-          <ThemeToggle />
           <div style={{ display: "flex", gap: 10, marginTop: 20 }}>
             <Link
               href="/admissions"

@@ -1,5 +1,6 @@
 "use client";
-import { useAuth } from "./useAuth";
+import { useAuth } from "@/context/AuthContext";
+// import { useAuth } from "./useAuth";
 import { UserRole, AdminRole } from "@kwasu-portal/types";
 import {
   canPostAnnouncement,
@@ -8,7 +9,7 @@ import {
 } from "@kwasu-portal/utils-others";
 
 export function useRole() {
-  const { user, loading } = useAuth();
+  const { user, isLoading: loading } = useAuth();
   const role = user?.role ?? null;
 
   return {
@@ -31,7 +32,7 @@ export function useRole() {
 }
 
 export function useAuthLoading(): boolean {
-  return useAuth().loading;
+  return useAuth().isLoading;
 }
 
 export function useUserRole(): UserRole | null {

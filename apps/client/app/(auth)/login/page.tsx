@@ -3,7 +3,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useAuth } from "@/hooks/useAuth";
 import {
   BrandMark,
   Alert,
@@ -19,6 +18,7 @@ import {
   LuChevronRight,
   LuArrowRight,
 } from "react-icons/lu";
+import { useAuth } from "@/context/AuthContext";
 
 const PROGRAMMES = [
   "CAILS-KWASU Sandwich",
@@ -60,7 +60,7 @@ const PROGRAMMES = [
 
 export default function LoginPage() {
   const router = useRouter();
-  const { login, loading: authLoading, isAuthenticated, user } = useAuth();
+  const { login, isLoading: authLoading, isAuthenticated, user } = useAuth();
 
   const [matricNo, setMatricNo] = useState("");
   const [rememberMe, setRememberMe] = useState<boolean>(false);
@@ -94,9 +94,13 @@ export default function LoginPage() {
     e.preventDefault();
     setError(null);
     setIsSubmitting(true);
-    const result = await login(matricNo, password, rememberMe);
-    if (!result.ok) {
-      setError(result.error || "Login failed.");
+    const result = await login({ matricNo, password, rememberMe });
+    if (!result.success) {
+      setError(
+        result.error && typeof result.error === "string"
+          ? result.error
+          : "Login failed.",
+      );
       setIsSubmitting(false);
     } else {
       setIsSubmitting(false);
@@ -109,7 +113,7 @@ export default function LoginPage() {
     <div className="h-screen w-full flex flex-col md:flex-row bg-bg-base overflow-hidden">
       <div className="hidden md:flex md:w-5/12 lg:w-1/2 bg-[#0a2b1f] text-white p-8 lg:p-12 flex-col relative h-full">
         <div className="relative z-10 flex flex-col h-full overflow-hidden">
-          <BrandMark size="lg" className="mb-10 shrink-0" />
+          <BrandMark size="lg" className="mb-6 shrink-0" />
 
           <div className="mb-6 shrink-0">
             <h2 className="text-3xl font-bold mb-2 tracking-tight">
@@ -120,7 +124,6 @@ export default function LoginPage() {
             </p>
           </div>
 
-          {/* Search Box */}
           <Input
             placeholder="Filter programmes..."
             value={searchQuery}
@@ -129,7 +132,6 @@ export default function LoginPage() {
             className="rounded-xl bg-white/5 border-white/10 text-white placeholder:text-white/40"
           />
 
-          {/* Scrollable List */}
           <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar space-y-2 pb-4 mt-4">
             {filteredProgrammes.map((programme) => (
               <button
@@ -153,9 +155,7 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* RIGHT PANEL: Login Form */}
       <div className="w-full md:w-7/12 lg:w-1/2 flex flex-col items-center justify-center p-6 md:p-12 overflow-y-auto h-full">
-        {/* Mobile-Only Brand & New Applicant Button */}
         <div className="md:hidden w-full flex flex-col items-center mb-8 shrink-0">
           <BrandMark size="md" className="mb-4" direction="vertical" />
         </div>
@@ -249,7 +249,6 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* Mobile Programme Modal */}
       <Modal isOpen={isModalOpen} onClose={onModalClose} className="h-120">
         <Modal.Header>Select Programme</Modal.Header>
         <div className="p-4">
