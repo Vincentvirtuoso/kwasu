@@ -1,10 +1,9 @@
-// app/not-found.tsx
 "use client";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { BrandMark, Button } from "@kwasu-portal/components";
-import { LuHouse, LuArrowLeft, LuCompass } from "react-icons/lu";
+import { LuHouse, LuArrowLeft } from "react-icons/lu";
 
 export default function NotFound() {
   const router = useRouter();
