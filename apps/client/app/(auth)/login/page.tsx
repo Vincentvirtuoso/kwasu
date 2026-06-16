@@ -75,10 +75,12 @@ export default function LoginPage() {
       p.toLowerCase().includes(searchQuery.toLowerCase()),
     );
   }, [searchQuery]);
+
   const onModalClose = () => {
     setIsModalOpen(false);
     setSearchQuery("");
   };
+
   const handleSelect = (programme: string) => {
     onModalClose();
     router.push(`/apply?programme=${encodeURIComponent(programme)}`);
@@ -111,6 +113,7 @@ export default function LoginPage() {
 
   return (
     <div className="h-screen w-full flex flex-col md:flex-row bg-bg-base overflow-hidden">
+      {/* Left Pane: Desktop Sidebar / New Applicants */}
       <div className="hidden md:flex md:w-5/12 lg:w-1/2 bg-[#0a2b1f] text-white p-8 lg:p-12 flex-col relative h-full">
         <div className="relative z-10 flex flex-col h-full overflow-hidden">
           <BrandMark size="lg" className="mb-6 shrink-0" />
@@ -147,6 +150,12 @@ export default function LoginPage() {
                 <LuChevronRight className="shrink-0 group-hover:translate-x-1 transition-transform" />
               </button>
             ))}
+            
+            {filteredProgrammes.length === 0 && (
+              <p className="text-center text-white/40 py-8 text-sm">
+                No programmes found matching your search.
+              </p>
+            )}
           </div>
 
           <footer className="mt-auto pt-6 border-t border-white/10 text-[10px] uppercase tracking-widest text-white/30 shrink-0">
@@ -155,6 +164,7 @@ export default function LoginPage() {
         </div>
       </div>
 
+      {/* Right Pane: Central Login Form */}
       <div className="w-full md:w-7/12 lg:w-1/2 flex flex-col items-center justify-center p-6 md:p-12 overflow-y-auto h-full">
         <div className="md:hidden w-full flex flex-col items-center mb-8 shrink-0">
           <BrandMark size="md" className="mb-4" direction="vertical" />
@@ -203,10 +213,13 @@ export default function LoginPage() {
                 label="Remember me"
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
+                disabled={isLoading}
               />
               <Link
                 href="/forgot-password"
-                className="text-sm font-semibold whitespace-nowrap text-gold-600 hover:underline"
+                className={`text-sm font-semibold whitespace-nowrap text-gold-600 hover:underline ${
+                  isLoading ? "pointer-events-none opacity-50" : ""
+                }`}
               >
                 Forgot password?
               </Link>
@@ -215,6 +228,7 @@ export default function LoginPage() {
             <Button type="submit" disabled={isLoading} fullWidth size="lg">
               {isLoading ? "Verifying..." : "Sign In to Portal"}
             </Button>
+            
             <Button
               onClick={() => {
                 setIsModalOpen(true);
@@ -223,33 +237,18 @@ export default function LoginPage() {
               fullWidth
               variant="ghost"
               type="button"
+              disabled={isLoading}
               className="md:hidden flex"
               rightIcon={<LuArrowRight />}
             >
               New Applicant? Apply Here
             </Button>
           </form>
-
-          <p className="mt-8 text-center text-xs text-fg-muted leading-loose">
-            By signing in, you agree to our{" "}
-            <Link
-              href="/terms"
-              className="font-medium text-fg-base hover:underline"
-            >
-              Terms of Service
-            </Link>{" "}
-            &{" "}
-            <Link
-              href="/privacy"
-              className="font-medium text-fg-base hover:underline"
-            >
-              Privacy Policy
-            </Link>
-          </p>
         </div>
       </div>
 
-      <Modal isOpen={isModalOpen} onClose={onModalClose} className="h-120">
+      {/* Mobile Selection Modal */}
+      <Modal isOpen={isModalOpen} onClose={onModalClose} className="h-120 max-h-[85vh]">
         <Modal.Header>Select Programme</Modal.Header>
         <div className="p-4">
           <Input
@@ -259,8 +258,8 @@ export default function LoginPage() {
             leftIcon={<LuSearch className="text-fg-muted font-light" />}
           />
         </div>
-        <Modal.Body>
-          <div className="flex-1 space-y-2">
+        <Modal.Body className="overflow-y-auto">
+          <div className="flex-1 space-y-2 pb-4">
             {filteredProgrammes.map((programme) => (
               <button
                 key={programme}
@@ -272,7 +271,7 @@ export default function LoginPage() {
               </button>
             ))}
             {filteredProgrammes.length === 0 && (
-              <p className="text-center text-fg-muted py-8">
+              <p className="text-center text-fg-muted py-8 text-sm">
                 No programmes found
               </p>
             )}
